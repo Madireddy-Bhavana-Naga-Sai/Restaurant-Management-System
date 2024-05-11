@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Management System - Menu</title>
+    <style>
+        /* Styles for Menu */
+        body {
+            background-color: #AFEEEE; /* Light gray background color */
+            font-family: Arial, sans-serif;
+            text-align: center; /* Center align content */
+        }
+        h1 {
+            color: #FF69B4; /* Dark gray heading color */
+        }
+        #menuBar {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .category {
+            width: 30%; /* Adjust as needed */
+            margin-bottom: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        .category-title {
+            margin-top: 0;
+            font-weight: bold; /* Bold font for category title */
+            color: #6c757d; /* Dark gray color for category title */
+            text-align: center;
+        }
+        .menu-item {
+            margin-bottom: 10px;
+        }
+        .menu-item-price {
+            color: #333; /* Default text color */
+        }
+        /* Style the link */
+        .order-box {
+            margin: 5px auto;
+            text-decoration: none;
+            display: block; /* Changed from inline-block to block */
+            font-size: 16px; /* Adjust font size */
+        }
+        .order-box:hover {
+            background-color: #228B22; /* Darker green on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Menu</h1>
+    <ul id="menuBar">
+        <!-- Menu items will be added dynamically using JavaScript -->
+    </ul>
+
+    <!-- JavaScript -->
+    <script>
+        // Function to fetch menu items from the server and populate the menu
+        function fetchMenu() {
+            // Sample menu data
+            const menuData = [
+                // Fast Foods
+                { category: "Fast Foods", name: "Burger", price: 250 },
+                { category: "Fast Foods", name: "Pizza", price: 450},
+                { category: "Fast Foods", name: "Salad", price: 350},
+                { category: "Fast Foods", name: "Pasta", price: 550},
+                { category: "Fast Foods", name: "Momos", price: 550},
+                { category: "Fast Foods", name: "Pani puri", price: 250},
+                { category: "Fast Foods", name: "Chat", price: 150},
+                { category: "Fast Foods", name: "Noodles", price: 250},
+                { category: "Fast Foods", name: "Chicken Noodles", price: 450},
+                { category: "Fast Foods", name: "Paneer Noodles", price: 350},
+                // Tiffins
+                { category: "Tiffins", name: "Idli", price: 80 },
+                { category: "Tiffins", name: "Dosa", price: 100 },
+                { category: "Tiffins", name: "Vada", price: 85 },
+                { category: "Tiffins", name: "Upma", price: 60 },
+                { category: "Tiffins", name: "Chapathi", price: 90 },
+                { category: "Tiffins", name: "Porota", price: 100 },
+                { category: "Tiffins", name: "Bonda", price: 50 },
+                { category: "Tiffins", name: "Naan", price: 60 },
+                { category: "Tiffins", name: "Roti", price: 35 },
+                // Rice
+                { category: "Rice", name: "special Biryani", price: 500 },
+                { category: "Rice", name: "Chicken Biryani", price: 550 },
+                { category: "Rice", name: "Mutton Biryani", price: 650 },
+                { category: "Rice", name: "Fry Biryani", price: 450 },
+                { category: "Rice", name: "Frawn Biryani", price: 500 },
+                { category: "Rice", name: "Fried Rice", price: 200 },
+                { category: "Rice", name: "Veg Fried Rice", price: 250 },
+                { category: "Rice", name: "Chicken Fried Rice", price: 350 },
+                { category: "Rice", name: "Paneer Fried Rice", price: 300 },
+                //Curries
+                { category: "Curries", name: "Paneer Butter Masala", price: 250 },
+                { category: "Curries", name: "Kaju Tomato", price: 350 },
+                { category: "Curries", name: "Methi Chaman", price: 250 },
+                { category: "Curries", name: "Palak Paneer", price: 250 },
+                { category: "Curries", name: "Mushroom curry", price: 350 },
+                { category: "Curries", name: "Butter Chicken", price: 350 },
+                { category: "Curries", name: "Malli Chicken", price: 350 },
+                { category: "Curries", name: "Fish curry", price: 450 },
+                { category: "Curries", name: "Prawn curry", price: 350 },
+                { category: "Curries", name: "Mutton curry", price: 650 },
+                { category: "Curries", name: "crab curry", price: 550 },
+                //Starters
+                { category: "Starters", name: "Crispy chicken", price: 300 },
+                { category: "Starters", name: "chicken 65", price: 300 },
+                { category: "Starters", name: "Crispy corn", price: 250 },
+                { category: "Starters", name: "Roasted Mushroom", price: 250 },
+                { category: "Starters", name: "Paneer 65", price: 300 },
+                { category: "Starters", name: "Grill Fish", price: 350 },
+                { category: "Starters", name: "Chicken lolipop", price: 350 },
+                // Desserts
+                { category: "Desserts", name: "Ice Cream", price: 100 },
+                { category: "Desserts", name: "Vanilla ice cream", price: 150},
+                { category: "Desserts", name: "Strawberry ice cream", price: 150},
+                { category: "Desserts", name: "Buttersoch ice cream", price: 150},
+                { category: "Desserts", name: "Pastry", price: 150},
+                { category: "Desserts", name: "Cake", price: 250 },
+                { category: "Desserts", name: "Red velvet", price: 150},
+                { category: "Desserts", name: "Black Forest", price: 150},
+                //Drinks
+                { category: "Drinks", name: "Water", price: 150},
+                { category: "Drinks", name: "Soft drinks", price: 150},
+                { category: "Drinks", name: "Lassi", price: 150},
+                { category: "Drinks", name: "Butter Milk", price: 150},
+                { category: "Drinks", name: "Mojitos(All flavours)", price: 150},
+            ];
+
+            const menuBar = document.getElementById('menuBar');
+            let categories = {};
+
+            menuData.forEach(item => {
+                if (!categories[item.category]) {
+                    categories[item.category] = [];
+                }
+                categories[item.category].push(item);
+            });
+
+            for (const category in categories) {
+                const categoryContainer = document.createElement('div');
+                categoryContainer.classList.add('category');
+
+                const categoryTitle = document.createElement('h2');
+                categoryTitle.textContent = category;
+                categoryTitle.classList.add('category-title');
+
+                categoryContainer.appendChild(categoryTitle);
+
+                categories[category].forEach(item => {
+                    const menuItem = document.createElement('div');
+                    menuItem.classList.add('menu-item');
+                    menuItem.textContent = `${item.name} - ₹${item.price}`;
+                    categoryContainer.appendChild(menuItem);
+                });
+
+                menuBar.appendChild(categoryContainer);
+            }
+        }
+
+        // Fetch menu items when the page loads
+        window.onload = function() {
+            fetchMenu();
+        };
+    </script>
+
+    <!-- Link to place order -->
+    <div class="order-box">
+        <a href="http://localhost:63342/Template/3.html?_ijt=7nc0kin6tiq3qqai1icj96qta0&_ij_reload=RELOAD_ON_SAVE" target="_blank" class="next-word">CLICK HERE TO PLACE ORDER</a>
+    </div>
+</body>
+</html>

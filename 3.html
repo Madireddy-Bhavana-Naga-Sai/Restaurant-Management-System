@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Management System</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color:#AFEEEE ; /* Light gray background color */
+            color: #333; /* Default text color */
+            margin: 0;
+            padding: 0;
+        }
+
+        section {
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fff; /* White background color for sections */
+            border-radius: 5px; /* Add some rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        }
+
+        h1 {
+            color: #555; /* Dark gray heading color */
+        }
+
+        /* Cart section specific styles */
+        #cartSection {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        #cart {
+            list-style: none;
+            padding: 0;
+        }
+
+        /* Link styles */
+        .next-word {
+            color: #007bff; /* Blue link color */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .next-word:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Place Order Section -->
+    <section id="placeOrderSection">
+        <h1>Place Order</h1>
+        <form id="orderForm">
+            <label for="menuItem">Select Item:</label>
+            <select id="menuItem" multiple>
+                <!-- Menu items will be populated dynamically using JavaScript -->
+            </select><br><br>
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" min="1" value="1"><br><br>
+            <button type="button" onclick="addToCart()">Add to Cart</button><br><br>
+        </form>
+    </section>
+
+    <!-- Cart Section -->
+    <section id="cartSection">
+        <h1>Cart</h1>
+        <ul id="cart">
+            <!-- Cart items will be added dynamically using JavaScript -->
+        </ul>
+        <p id="totalItems">Total Items: 0</p> <!-- Display total items selected -->
+        <p id="totalCost">Total Cost: ₹0.00</p> <!-- Display total cost in rupees -->
+    </section>
+
+    <!-- JavaScript -->
+    <script>
+        // Sample menu data
+        const menuData = [
+            { name: "Burger", price: 250 },
+            { name: "Pizza", price: 450 },
+            { name: "Salad", price: 350 },
+            { name: "Pasta", price: 550 },
+            { name: "Momos", price: 550},
+            { name: "Pani puri", price: 250},
+            { name: "Chat", price: 150},
+            { name: "Noodles", price: 250},
+            { name: "Chicken Noodles", price: 450},
+            { name: "Paneer Noodles", price: 350},
+            { name: "Idli", price: 80 },
+            { name: "Dosa", price: 100 },
+            { name: "Vada", price: 85 },
+            { name: "Upma", price: 60 },
+            { name: "Chapathi", price: 90 },
+            { name: "Porota", price: 100 },
+            { name: "Bonda", price: 50 },
+            { name: "Naan", price: 60 },
+            { name: "Roti", price: 35 },
+            { name: "special Biryani", price: 500 },
+            { name: "Chicken Biryani", price: 550 },
+            { name: "Mutton Biryani", price: 650 },
+            { name: "Fry Biryani", price: 450 },
+            { name: "Frawn Biryani", price: 500 },
+            { name: "Fried Rice", price: 200 },
+            { name: "Veg Fried Rice", price: 250 },
+            { name: "Chicken Fried Rice", price: 350 },
+            { name: "Paneer Fried Rice", price: 300 },
+            { name: "Paneer Butter Masala", price: 250 },
+            { name: "Kaju Tomato", price: 350 },
+            { name: "Methi Chaman", price: 250 },
+            { name: "Palak Paneer", price: 250 },
+            { name: "Mushroom curry", price: 350 },
+            { name: "Butter Chicken", price: 350 },
+            { name: "Malli Chicken", price: 350 },
+            { name: "Fish curry", price: 450 },
+            { name: "Fish curry", price: 450 },
+            { name: "Prawn curry", price: 350 },
+            { name: "Mutton curry", price: 650 },
+            { name: "crab curry", price: 550 },
+            { name: "Crispy chicken", price: 300 },
+            { name: "chicken 65", price: 300 },
+            { name: "Crispy corn", price: 250 },
+            { name: "Roasted Mushroom", price: 250 },
+            { name: "Paneer 65", price: 300 },
+            { name: "Grill Fish", price: 350 },
+            { name: "Chicken lolipop", price: 350 },
+            { name: "Ice Cream", price: 100 },
+            { name: "Vanilla ice cream", price: 150},
+            { name: "Strawberry ice cream", price: 150},
+            { name: "Buttersoch ice cream", price: 150},
+            { name: "Pastry", price: 150},
+            { name: "Cake", price: 250 },
+            { name: "Red velvet", price: 150},
+            { name: "Black Forest", price: 150},
+            { name: "Water", price: 150},
+            { name: "Soft drinks", price: 150},
+            { name: "Lassi", price: 150},
+            { name: "Butter Milk", price: 150},
+            { name: "Mogitos(All flavours)", price: 150},
+        ];
+
+        // Function to populate the select dropdown with menu items
+        function populateMenuItems() {
+            const selectMenu = document.getElementById('menuItem');
+
+            menuData.forEach(item => {
+                const option = document.createElement('option');
+                option.textContent = `${item.name} - ₹${item.price}`;
+                option.value = item.name;
+                selectMenu.appendChild(option);
+            });
+        }
+
+        // Call the function to populate menu items when the page loads
+        window.onload = function() {
+            populateMenuItems();
+        };
+
+        let totalItems = 0; // Initialize total items counter
+        let totalCost = 0; // Initialize total cost counter
+
+        // Function to add selected item to the cart
+        function addToCart() {
+            const selectedItems = document.getElementById('menuItem').selectedOptions;
+            const quantity = parseInt(document.getElementById('quantity').value);
+
+            // Iterate through selected items
+            Array.from(selectedItems).forEach(selectedItem => {
+                const menuItem = selectedItem.value;
+
+                // Find the price of the selected item
+                const itemData = menuData.find(item => item.name === menuItem);
+                if (itemData) {
+                    const itemPrice = itemData.price;
+                    const cart = document.getElementById('cart');
+                    const li = document.createElement('li');
+                    li.textContent = `${menuItem} x${quantity}`;
+                    cart.appendChild(li);
+
+                    // Update total items counter and total cost
+                    totalItems += quantity;
+                    totalCost += itemPrice * quantity;
+                    document.getElementById('totalItems').textContent = `Total Items: ${totalItems}`;
+                    document.getElementById('totalCost').textContent = `Total Cost: ₹${totalCost.toFixed(2)}`;
+                }
+            });
+        }
+    </script>
+
+    <!-- Link to make reservation -->
+    <a href="http://localhost:63342/Template/4.html?_ijt=j21jaghkup3crm69u3bndepptk&_ij_reload=RELOAD_ON_SAVE" target="_blank" class="next-word">CLICK HERE TO MAKE RESERVATION</a>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Management System - Make Reservation</title>
+    <style>
+        /* Form styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #AFEEEE; /* Light gray background color */
+            color: #333; /* Default text color */
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        form {
+            width: 300px;
+            margin: 0 auto;
+            background-color: #fff; /* White background color */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        input[type="number"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff; /* Blue button color */
+            color: #fff; /* White button text color */
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Reservation status message style */
+        #reservationStatus {
+            color: #28a745; /* Green color for successful message */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Make Reservation</h1>
+    <form id="reservationForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required><br><br>
+        <label for="date">Date:</label>
+        <input type="date" id="date" required><br><br>
+        <label for="time">Time:</label>
+        <input type="time" id="time" required><br><br>
+        <label for="tableNumber">Table Number:</label>
+        <input type="number" id="tableNumber" min="1" max="15" required><br><br>
+        <button type="button" onclick="makeReservation()">Make Reservation</button>
+    </form>
+    <p id="reservationStatus"></p> <!-- Display reservation status -->
+
+    <!-- JavaScript -->
+    <script>
+        // Function to make a reservation
+        function makeReservation() {
+            const name = document.getElementById('name').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const tableNumber = document.getElementById('tableNumber').value;
+            const reservationStatus = document.getElementById('reservationStatus');
+
+            // Send reservation data to the server for processing (mocking here)
+            const reservationSuccessful = true; // Simulating successful reservation
+
+            if (reservationSuccessful) {
+                reservationStatus.textContent = "Your reservation is successful!";
+            } else {
+                reservationStatus.textContent = "Failed to make reservation. Please try again.";
+            }
+        }
+    </script>
+</body>
+</html>
